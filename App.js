@@ -1,27 +1,121 @@
-import React, { useState } from 'react'; // Combine the imports into one line
-import { View, Text } from 'react-native';
-import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  Button
+} from 'react-native';
+import { BottomSheet } from 'react-native-btr';
+import { SocialIcon } from '@rneui/themed';
 
-export default function App() {
+const App = () => {
   const [visible, setVisible] = useState(false);
 
-  const hideMenu = () => setVisible(false);
-
-  const showMenu = () => setVisible(true);
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+  };
 
   return (
-    <View style={{ height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-      <Menu
-        visible={visible}
-        anchor={<Text onPress={showMenu}>Show menu</Text>}
-        onRequestClose={hideMenu}
-      >
-        <MenuItem onPress={hideMenu}>Menu item 1</MenuItem>
-        <MenuItem onPress={hideMenu}>Menu item 2</MenuItem>
-        <MenuItem disabled>Disabled item</MenuItem>
-        <MenuDivider />
-        <MenuItem onPress={hideMenu}>Menu item 4</MenuItem>
-      </Menu>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Example of Bottom Sheet in React Native
+        </Text>
+        <Button
+          onPress={toggleBottomNavigationView}
+          title="Show Bottom Sheet"
+        />
+        <BottomSheet
+          visible={visible}
+          onBackButtonPress={toggleBottomNavigationView}
+          onBackdropPress={toggleBottomNavigationView}
+        >
+          <View style={styles.bottomNavigationView}>
+            <View style={styles.bottomSheetContent}>
+              <Text style={styles.shareText}>
+                Share Using
+              </Text>
+              <View style={styles.iconRow}>
+                <SocialIcon
+                  type="twitter"
+                  onPress={() => {
+                    toggleBottomNavigationView();
+                    alert('twitter');
+                  }}
+                />
+                <SocialIcon
+                  type="facebook"
+                  onPress={() => {
+                    toggleBottomNavigationView();
+                    alert('facebook');
+                  }}
+                />
+                <SocialIcon
+                  type="instagram"
+                  onPress={() => {
+                    toggleBottomNavigationView();
+                    alert('instagram');
+                  }}
+                />
+                <SocialIcon
+                  type="linkedin"
+                  onPress={() => {
+                    toggleBottomNavigationView();
+                    alert('linkedin');
+                  }}
+                />
+                <SocialIcon
+                  type="medium"
+                  onPress={() => {
+                    toggleBottomNavigationView();
+                    alert('medium');
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+        </BottomSheet>
+      </View>
+    </SafeAreaView>
   );
-}
+};
+
+export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E0F7FA',
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: 'center'
+  },
+  bottomNavigationView: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomSheetContent: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  shareText: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 20
+  },
+  iconRow: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
+});
