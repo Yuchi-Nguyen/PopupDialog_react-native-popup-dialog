@@ -1,81 +1,94 @@
 import React, { useState } from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
   View,
   Text,
-  Button
+  TouchableHighlight,
+  StyleSheet,
+  Button,
 } from 'react-native';
-import { BottomSheet } from 'react-native-btr';
-import { SocialIcon } from '@rneui/themed';
+import Dialog, {
+  DialogTitle,
+  DialogContent,
+  DialogFooter,
+  DialogButton,
+  SlideAnimation,
+  ScaleAnimation,
+} from 'react-native-popup-dialog';
 
 const App = () => {
-  const [visible, setVisible] = useState(false);
-
-  const toggleBottomNavigationView = () => {
-    setVisible(!visible);
-  };
+  const [defaultAnimationDialog, setDefaultAnimationDialog] = useState(false);
+  const [scaleAnimationDialog, setScaleAnimationDialog] = useState(false);
+  const [slideAnimationDialog, setSlideAnimationDialog] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <Text style={styles.title}>
-          Example of Bottom Sheet in React Native
-        </Text>
-        <Button
-          onPress={toggleBottomNavigationView}
-          title="Show Bottom Sheet"
-        />
-        <BottomSheet
-          visible={visible}
-          onBackButtonPress={toggleBottomNavigationView}
-          onBackdropPress={toggleBottomNavigationView}
-        >
-          <View style={styles.bottomNavigationView}>
-            <View style={styles.bottomSheetContent}>
-              <Text style={styles.shareText}>
-                Share Using
-              </Text>
-              <View style={styles.iconRow}>
-                <SocialIcon
-                  type="twitter"
-                  onPress={() => {
-                    toggleBottomNavigationView();
-                    alert('twitter');
-                  }}
-                />
-                <SocialIcon
-                  type="facebook"
-                  onPress={() => {
-                    toggleBottomNavigationView();
-                    alert('facebook');
-                  }}
-                />
-                <SocialIcon
-                  type="instagram"
-                  onPress={() => {
-                    toggleBottomNavigationView();
-                    alert('instagram');
-                  }}
-                />
-                <SocialIcon
-                  type="linkedin"
-                  onPress={() => {
-                    toggleBottomNavigationView();
-                    alert('linkedin');
-                  }}
-                />
-                <SocialIcon
-                  type="medium"
-                  onPress={() => {
-                    toggleBottomNavigationView();
-                    alert('medium');
-                  }}
-                />
-              </View>
-            </View>
-          </View>
-        </BottomSheet>
+        <Text style={styles.titleStyle}>Ví dụ về Popup Dialog trong React Native</Text>
+       
+        <TouchableHighlight
+          style={styles.buttonStyle}
+          onPress={() => setDefaultAnimationDialog(true)}>
+          <Text style={styles.buttonTextStyle}>Default Animation Dialog</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.buttonStyle}
+          onPress={() => setScaleAnimationDialog(true)}>
+          <Text style={styles.buttonTextStyle}>Scale Animation Dialog</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.buttonStyle}
+          onPress={() => setSlideAnimationDialog(true)}>
+          <Text style={styles.buttonTextStyle}>Slide Animation Dialog</Text>
+        </TouchableHighlight>
+
+        <Dialog
+          onDismiss={() => setDefaultAnimationDialog(false)}
+          width={0.9}
+          visible={defaultAnimationDialog}
+          rounded
+          actionsBordered
+          dialogTitle={<DialogTitle title="Default Animation Dialog" />}
+          footer={
+            <DialogFooter>
+              <DialogButton
+                text="CANCEL"
+                onPress={() => setDefaultAnimationDialog(false)}
+              />
+              <DialogButton
+                text="OK"
+                onPress={() => setDefaultAnimationDialog(false)}
+              />
+            </DialogFooter>
+          }>
+          <DialogContent>
+            <Text>Đây là ví dụ về hộp thoại với hoạt ảnh mặc định</Text>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          onTouchOutside={() => setScaleAnimationDialog(false)}
+          width={0.9}
+          visible={scaleAnimationDialog}
+          dialogAnimation={new ScaleAnimation()}
+          dialogTitle={<DialogTitle title="Scale Animation Dialog" />}>
+          <DialogContent>
+            <Text>Đây là ví dụ về hộp thoại với hoạt ảnh phóng to</Text>
+            <Button title="Đóng" onPress={() => setScaleAnimationDialog(false)} />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          onTouchOutside={() => setSlideAnimationDialog(false)}
+          visible={slideAnimationDialog}
+          dialogTitle={<DialogTitle title="Slide Animation Dialog" />}
+          dialogAnimation={new SlideAnimation({ slideFrom: 'bottom' })}>
+          <DialogContent>
+            <Text>Đây là ví dụ về hộp thoại với hoạt ảnh trượt</Text>
+          </DialogContent>
+        </Dialog>
       </View>
     </SafeAreaView>
   );
@@ -86,36 +99,25 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 2,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#E0F7FA',
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 20,
-    textAlign: 'center'
-  },
-  bottomNavigationView: {
-    backgroundColor: '#fff',
-    width: '100%',
-    height: 250,
     justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#307ecc',
+    padding: 16,
   },
-  bottomSheetContent: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+  buttonStyle: {
+    minWidth: '100%',
+    padding: 10,
+    backgroundColor: '#f5821f',
+    margin: 15,
   },
-  shareText: {
+  buttonTextStyle: {
+    color: 'white',
     textAlign: 'center',
-    padding: 20,
-    fontSize: 20
   },
-  iconRow: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  }
+  titleStyle: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: 10,
+  },
 });
